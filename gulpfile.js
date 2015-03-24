@@ -5,6 +5,7 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
+var child_process = require('child_process');
 
 var paths = {
 	styles: ['./assets/styles/app.scss'],
@@ -44,5 +45,7 @@ gulp.task('watch', function(){
 	gulp.watch(paths.styles.concat(paths.styleIncludes) , ['styles']);
 	gulp.watch(paths.scripts , ['scripts']);
 });
+
+gulp.task('start')
 
 gulp.task('default', ['styles', 'scripts', 'watch']);
