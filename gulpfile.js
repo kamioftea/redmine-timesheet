@@ -5,7 +5,7 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
-var child_process = require('child_process');
+var nodemon = require('gulp-nodemon');
 
 var paths = {
 	styles: ['./assets/styles/app.scss'],
@@ -41,11 +41,17 @@ gulp.task('scripts', function () {
 		.pipe(gulp.dest('./public/js'))
 });
 
-gulp.task('watch', function(){
+gulp.task('watch',['styles', 'scripts'], function(){
 	gulp.watch(paths.styles.concat(paths.styleIncludes) , ['styles']);
 	gulp.watch(paths.scripts , ['scripts']);
 });
 
-gulp.task('start')
+gulp.task('start',['styles', 'scripts'], function(){
+	nodemon({
+		script: './bin/www'
+		, ext: 'js'
+		, env: { 'NODE_ENV': 'development' }
+	})
+});
 
-gulp.task('default', ['styles', 'scripts', 'watch']);
+gulp.task('default', ['start', 'watch']);
