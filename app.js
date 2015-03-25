@@ -7,8 +7,7 @@ var bodyParser = require('body-parser');
 var hoganExpress = require('hogan-express');
 var session = require('express-session');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var User = require('./model/user');
+
 
 var app = express();
 
@@ -36,40 +35,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function(user, done) {
-	done(null, user.email);
-});
-
-passport.deserializeUser(function(email, done) {
-	User.getUser(email, function(err, user) {
-		done(err, user);
-	});
-});
-
-passport.use(new LocalStrategy(
-	{ usernameField: 'email' },
-	function(email, password, done) {
-
-		User.getUser(email, function(err, user) {
-			if (err) { return done(err); }
-			if (!user) {
-				return done(null, false, { message: 'Incorrect email.' });
-			}
-
-			if (!User.validPassword(user, password)) {
-				return done(null, false, { message: 'Incorrect password.' });
-			}
-			return done(null, user);
-		});
-	}
-));
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth')(app, passport);
 
-app.use('/', routes);
 app.use('/auth', auth);
+app.use('/', routes);
 app.use('/users', users);
 
 // catch 404 and forward to error handler

@@ -30,9 +30,13 @@ function getUser(email, cb)
 	var sql =
 		"SELECT email, password, host, key" +
 		" FROM user" +
-		" WHERE email = ?"
+		" WHERE email = ?";
+
+	console.log(sql);
 
 	db.get(sql,[email], function (err, row) {
+		console.log(email);
+		console.log(row);
 		return cb(err, row);
 	});
 }
