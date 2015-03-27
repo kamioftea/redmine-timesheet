@@ -84,8 +84,8 @@ module.exports = function (app, passport) {
 	var router = express.Router();
 
 	/* GET home page. */
-	router.get('/login', function (req, res, next) {
-		res.render('login', {
+	router.get('/login', function (req, res) {
+		res.render('auth/login', {
 			page: {title: 'Login'},
 			message: req.flash('message')
 		});
@@ -97,9 +97,14 @@ module.exports = function (app, passport) {
 		failureFlash:    true
 	}));
 
+	router.get('/logout', function(req, res){
+		req.logout();
+		res.redirect('/auth/login');
+	});
+
 	/* GET Registration Page */
 	router.get('/signup', function (req, res) {
-		res.render('signup', {
+		res.render('auth/signup', {
 			title:   'Sign Up | Redmine Timesheet',
 			message: req.flash('message')
 		});

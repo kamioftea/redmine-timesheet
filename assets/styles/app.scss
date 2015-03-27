@@ -1,3 +1,18 @@
-@import "foundation/settings";
+@import "settings";
 @import "foundation";
 
+body {
+  background-color: $white-smoke;
+  & > .row {
+    background-color: $ghost;
+    & > .columns
+    {
+      box-shadow: 0 0 6px 1px $aluminum;
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+.top-bar {
+  z-index: 1;
+}

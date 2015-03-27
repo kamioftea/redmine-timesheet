@@ -6,7 +6,15 @@
 		</ul>
 		<section class="top-bar-section"> <!-- Right Nav Section -->
 			<ul class="right">
-
+				{{#user }}
+					<li class="has-dropdown">
+						<a class="" href="#">Logged in as {{ user.email }}</a>
+						<ul class="dropdown">
+							<li><a href="/account">Manage Account</a></li>
+							<li><a href="/auth/logout">Logout</a></li>
+						</ul>
+					</li>
+				{{/user}}
 			</ul>
 			<!-- Left Nav Section -->
 			<ul class="left">

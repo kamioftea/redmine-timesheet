@@ -9,15 +9,15 @@ db.run("CREATE TABLE IF NOT EXISTS user (" +
 	"user_id INTEGER PRIMARY KEY, " +
 	"email VARCHAR(255), " +
 	"password VARCHAR(60), " +
-	"host VARCHAR(255), " +
-	"key VARCHAR(40), " +
+	"api_host VARCHAR(255), " +
+	"api_key VARCHAR(40), " +
 	"UNIQUE (email)" +
 ")");
 
 function getUsers(cb)
 {
 	var users = [];
-	db.each("SELECT user_id, email, host, key FROM user", function (err, row) {
+	db.each("SELECT user_id, email, api_host, api_key FROM user", function (err, row) {
 		if (err) {
 			return cb(err)
 		}
@@ -30,7 +30,7 @@ function getUsers(cb)
 function getUser(user_id, cb)
 {
 	var sql =
-		"SELECT email, password, host, key" +
+		"SELECT user_id, email, password, api_host, api_key" +
 		" FROM user" +
 		" WHERE user_id = ?";
 
@@ -42,7 +42,7 @@ function getUser(user_id, cb)
 function getUserByEmail(email, cb)
 {
 	var sql =
-		"SELECT email, password, host, key" +
+		"SELECT user_id, email, password, api_host, api_key" +
 		" FROM user" +
 		" WHERE email = ?";
 
@@ -51,15 +51,40 @@ function getUserByEmail(email, cb)
 	});
 }
 
-function addUser(email, password, host, key, cb)
+function getHashedPassword(password) {
+	return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+}
+
+function addUser(email, password, api_host, api_key, cb)
 {
 	var sql =
-		"INSERT INTO user (email, password, host, key)" +
+		"INSERT INTO user (email, password, api_host, api_key)" +
 		" VALUES (?, ?, ?, ?)";
+	var hash = getHashedPassword(password);
+	db.run(sql,[email, hash, api_host, api_key], function (err) {
+		if(err) { cb(err) }
+		getUser(this.lastID, cb);
+	});
+}
+
+function updateUser(user, data, cb)
+{
+	var sql =
+		"UPDATE user SET" +
+			" email = ?," +
+			" password = ?," +
+			" api_host = ?," +
+			" api_key = ?" +
+		"WHERE user_id = ?";
+
+	var email = data.email || user.email;
+	var password = data.password ? getHashedPassword(data.password) : user.password;
+	var api_host = data.api_host || user.api_host;
+	var api_key = data.api_key || user.api_key;
 
 	var hash = bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 
-	db.run(sql,[email, hash, host, key], function (err) {
+	db.run(sql,[email, hash, api_host, api_key, user.user_id], function (err) {
 		if(err) { cb(err) }
 		getUser(this.lastID, cb);
 	});
@@ -75,5 +100,6 @@ module.exports = {
 	getUserByEmail: getUserByEmail,
 	getUsers: getUsers,
 	addUser: addUser,
+	updateUser: updateUser,
 	validPassword: validPassword
 };

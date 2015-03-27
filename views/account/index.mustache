@@ -1,0 +1,35 @@
+<h1>Account</h1>
+
+<form method="post">
+	<div>
+		<label>
+			Email:
+			<input type="text" name="email" value="{{ user.email }}"/>
+		</label>
+	</div>
+	<a data-swap="#password-container" href="#">Change Password...</a>
+	<div class="hide" id="password-container">
+		<label>
+			Password (Will remain unchanged if blank):
+			<input type="password" name="password"/>
+		</label>
+	</div>
+	<div>
+		<label>
+			Redmine Host:
+			<input type="text" name="api_host" value="{{ user.api_host }}"/>
+		</label>
+	</div>
+	<div>
+		<label>
+			Redmine API Key:
+			<input type="text" name="api_key" value="{{ user.api_key }}"/>
+		</label>
+	</div>
+	<div class="row">
+		<div class="small-12 columns text-right">
+			<input class="button" type="submit" value="Update"/>
+		</div>
+	</div>
+
+</form>

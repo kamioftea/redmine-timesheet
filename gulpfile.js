@@ -6,15 +6,20 @@ var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 var nodemon = require('gulp-nodemon');
+var postcss = require('gulp-postcss');
+var sourcemaps = require('gulp-sourcemaps');
+var autoprefixer = require('autoprefixer-core');
 
 var paths = {
-	styles: ['./assets/styles/app.scss'],
+	styles:        ['./assets/styles/app.scss'],
 	styleIncludes: [
+		'./assets/styles',
 		'./bower_components/foundation/scss'
 	],
-	scripts: [
+	scripts:       [
 		'./bower_components/jquery/dist/jquery.js',
 		'./bower_components/foundation/js/foundation/foundation.js',
+		'./bower_components/foundation/js/foundation/foundation.alert.js',
 		'./bower_components/foundation/js/foundation/foundation.topbar.js',
 		'./bower_components/fastclick/lib/fastclick.js',
 		'./assets/scripts/app.js'
@@ -24,16 +29,21 @@ var paths = {
 gulp.task('styles', function () {
 	return gulp
 		.src(paths.styles)
+		.pipe(sourcemaps.init())
 		.pipe(sass({includePaths: paths.styleIncludes}))
+		.pipe(postcss([autoprefixer({browsers: ['last 2 version']})]))
 		.pipe(concat('app.css'))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('./public/stylesheets'))
 });
 
 gulp.task('scripts', function () {
 	gulp
 		.src(paths.scripts)
+		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(concat('app.js'))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('./public/js'));
 
 	return gulp
@@ -41,16 +51,16 @@ gulp.task('scripts', function () {
 		.pipe(gulp.dest('./public/js'))
 });
 
-gulp.task('watch',['styles', 'scripts'], function(){
-	gulp.watch(paths.styles.concat(paths.styleIncludes) , ['styles']);
-	gulp.watch(paths.scripts , ['scripts']);
+gulp.task('watch', ['styles', 'scripts'], function () {
+	gulp.watch(paths.styles.concat(paths.styleIncludes), ['styles']);
+	gulp.watch(paths.scripts, ['scripts']);
 });
 
-gulp.task('start',['styles', 'scripts'], function(){
+gulp.task('start', ['styles', 'scripts'], function () {
 	nodemon({
 		script: './bin/www'
-		, ext: 'js'
-		, env: { 'NODE_ENV': 'development' }
+		, ext:  'js'
+		, env:  {'NODE_ENV': 'development'}
 	})
 });
 

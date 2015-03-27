@@ -38,16 +38,25 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+var auth = require('./routes/auth')(app, passport);
+
 app.locals.site = {};
 app.locals.site.title = 'Redmine Timesheet';
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var auth = require('./routes/auth')(app, passport);
+app.use(function(req, res, next){
+	res.locals.user = req.user;
+	next();
+});
+
+
+var index = require('./routes/index');
+var account = require('./routes/account');
+//var users = require('./routes/users');
 
 app.use('/auth', auth);
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', index);
+app.use('/account', account);
+// app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
