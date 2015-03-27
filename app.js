@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hoganExpress = require('hogan-express');
 var session = require('express-session');
+var flash = require('connect-flash');
 var passport = require('passport');
 
 
@@ -30,8 +31,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
 	secret: 'keyboard cat',
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: false,
+	cookie: { maxAge: 60000 }
 }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
