@@ -35,6 +35,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.locals.site = {};
+app.locals.site.title = 'Redmine Timesheet';
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth')(app, passport);

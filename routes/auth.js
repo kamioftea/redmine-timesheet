@@ -47,7 +47,7 @@ module.exports = function (app, passport) {
 
 	/* GET home page. */
 	router.get('/login', function (req, res, next) {
-		res.render('login', {title: 'Login | Redmine Timesheet'});
+		res.render('login', {page: {title: 'Login'}});
 	});
 
 	router.post('/login', passport.authenticate('local', {
