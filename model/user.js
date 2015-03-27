@@ -3,19 +3,21 @@
  */
 var sqlite3 = require('sqlite3').verbose();
 var db =  new sqlite3.Database('data/v1.db');
+var bCrypt = require('bcrypt-nodejs');
 
 db.run("CREATE TABLE IF NOT EXISTS user (" +
+	"user_id INTEGER PRIMARY KEY, " +
 	"email VARCHAR(255), " +
 	"password VARCHAR(60), " +
 	"host VARCHAR(255), " +
 	"key VARCHAR(40), " +
-	"PRIMARY KEY (email)" +
+	"UNIQUE (email)" +
 ")");
 
 function getUsers(cb)
 {
 	var users = [];
-	db.each("SELECT email, host, key FROM user", function (err, row) {
+	db.each("SELECT user_id, email, host, key FROM user", function (err, row) {
 		if (err) {
 			return cb(err)
 		}
@@ -25,18 +27,26 @@ function getUsers(cb)
 	});
 }
 
-function getUser(email, cb)
+function getUser(user_id, cb)
+{
+	var sql =
+		"SELECT email, password, host, key" +
+		" FROM user" +
+		" WHERE user_id = ?";
+
+	db.get(sql,[user_id], function (err, row) {
+		return cb(err, row);
+	});
+}
+
+function getUserByEmail(email, cb)
 {
 	var sql =
 		"SELECT email, password, host, key" +
 		" FROM user" +
 		" WHERE email = ?";
 
-	console.log(sql);
-
 	db.get(sql,[email], function (err, row) {
-		console.log(email);
-		console.log(row);
 		return cb(err, row);
 	});
 }
@@ -47,19 +57,22 @@ function addUser(email, password, host, key, cb)
 		"INSERT INTO user (email, password, host, key)" +
 		" VALUES (?, ?, ?, ?)";
 
-	db.run(sql,[email, password, host, key], function (err, row) {
-		return cb(err, row);
+	var hash = bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+
+	db.run(sql,[email, hash, host, key], function (err) {
+		if(err) { cb(err) }
+		getUser(this.lastID, cb);
 	});
 }
 
 function validPassword(user, password)
 {
-	// TODO: bcrypt
-	return user.password === password;
+	return bCrypt.compareSync(password, user.password);
 }
 
 module.exports = {
 	getUser: getUser,
+	getUserByEmail: getUserByEmail,
 	getUsers: getUsers,
 	addUser: addUser,
 	validPassword: validPassword
