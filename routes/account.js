@@ -7,8 +7,17 @@ var router = express.Router();
 var userService = require('../model/user.js');
 
 router.get('/',
+	function (req, res, next){
+		if(!req.user.api_host || !req.user.api_key){
+			return next();
+		}
+		var api = require('../api/users.js')(req.user.api_host, req.user.api_key);
+		api.getCurrentUser(function(err, api_user){
+			res.locals.api_user = api_user;
+			return next();
+		});
+	},
 	function (req, res) {
-		console.log(req.flash());
 		res.render('account/index', {
 			page: {title: 'Account'},
 			message: req.flash('message')

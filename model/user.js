@@ -2,7 +2,7 @@
  * Created by Jeff on 24/03/2015.
  */
 var sqlite3 = require('sqlite3').verbose();
-var db =  new sqlite3.Database('data/v1.db');
+var db =  new sqlite3.Database('data/v1.db');
 var bCrypt = require('bcrypt-nodejs');
 
 db.run("CREATE TABLE IF NOT EXISTS user (" +
@@ -82,9 +82,7 @@ function updateUser(user, data, cb)
 	var api_host = data.api_host || user.api_host;
 	var api_key = data.api_key || user.api_key;
 
-	var hash = bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-
-	db.run(sql,[email, hash, api_host, api_key, user.user_id], function (err) {
+	db.run(sql,[email, password, api_host, api_key, user.user_id], function (err) {
 		if(err) { cb(err) }
 		getUser(this.lastID, cb);
 	});

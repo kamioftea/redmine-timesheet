@@ -1,35 +1,51 @@
 <h1>Account</h1>
-
-<form method="post">
-	<div>
-		<label>
-			Email:
-			<input type="text" name="email" value="{{ user.email }}"/>
-		</label>
+<div class="row">
+	<div class="small-12 medium-6 columns">
+		<form method="post">
+			<div>
+				<label>
+					Email:
+					<input type="text" name="email" value="{{ user.email }}"/>
+				</label>
+			</div>
+			<div data-swap="#password-container" class="form-element-swap-placeholder">
+				<a href="#">Change Password...</a>
+			</div>
+			<div class="hide" id="password-container">
+				<label>
+					Password (Will remain unchanged if blank):
+					<input type="password" name="password"/>
+				</label>
+			</div>
+			<div>
+				<label>
+					Redmine Host:
+					<input type="text" name="api_host" value="{{ user.api_host }}"/>
+				</label>
+			</div>
+			<div>
+				<label>
+					Redmine API Key:
+					<input type="text" name="api_key" value="{{ user.api_key }}"/>
+				</label>
+			</div>
+			<div class="row">
+				<div class="small-12 columns text-right">
+					<input class="button" type="submit" value="Update"/>
+				</div>
+			</div>
+		</form>
 	</div>
-	<a data-swap="#password-container" href="#">Change Password...</a>
-	<div class="hide" id="password-container">
-		<label>
-			Password (Will remain unchanged if blank):
-			<input type="password" name="password"/>
-		</label>
-	</div>
-	<div>
-		<label>
-			Redmine Host:
-			<input type="text" name="api_host" value="{{ user.api_host }}"/>
-		</label>
-	</div>
-	<div>
-		<label>
-			Redmine API Key:
-			<input type="text" name="api_key" value="{{ user.api_key }}"/>
-		</label>
-	</div>
-	<div class="row">
-		<div class="small-12 columns text-right">
-			<input class="button" type="submit" value="Update"/>
+	<div class="small-12 medium-6 columns ">
+		<div class="panel">
+			<dl>
+				<dt>Username</dt>
+				<dd>{{ api_user.login }}</dd>
+				<dt>Name</dt>
+				<dd>{{ api_user.firstname }} {{ api_user.lastname }}</dd>
+				<dt>Last Login</dt>
+				<dd>{{ api_user.last_login_on }}</dd>
+			</dl>
 		</div>
 	</div>
-
-</form>
+</div>

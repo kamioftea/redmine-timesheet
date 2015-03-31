@@ -15,9 +15,11 @@
     "express-session": "^1.10.4",
     "hjs": "~0.0.6",
     "hogan-express": "^0.5.2",
+    "moment": "^2.9.0",
     "morgan": "~1.5.1",
     "passport": "^0.2.1",
     "passport-local": "^1.0.0",
+    "request": "^2.54.0",
     "serve-favicon": "~2.2.0",
     "sqlite3": "^3.0.5"
   },
