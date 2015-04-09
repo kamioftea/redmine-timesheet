@@ -21,3 +21,26 @@ body {
 {
 	margin-bottom: 0.5rem;
 }
+
+dl.horizontal {
+  dt {
+    float:left;
+    width: 30%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  dd {
+    @include clearfix();
+    margin-left: 30%;
+    padding-left: 1em;
+  }
+}
+
+.inline {
+  margin: 0 0 1rem;
+  display: block;
+  line-height: 1.5;
+  padding: 0.5625rem 0;
+  font-size: 0.875rem;
+}

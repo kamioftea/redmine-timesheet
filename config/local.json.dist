@@ -1,0 +1,9 @@
+{
+  "session": {
+	"secret": "keyboard cat"
+  },
+  "db": {
+	"username": null,
+	"password": null
+  }
+}

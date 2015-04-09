@@ -2,32 +2,43 @@
 <div class="row">
 	<div class="small-12 medium-6 columns">
 		<form method="post">
-			<div>
-				<label>
-					Email:
-					<input type="text" name="email" value="{{ user.email }}"/>
-				</label>
+			<div class="row">
+				<div class="medium-4 columns">
+					<label class="right inline" for="email">Email:</label>
+				</div>
+				<div class="medium-8 columns">
+					<input type="text" name="email" id="email" value="{{ user.email }}"/>
+				</div>
 			</div>
-			<div data-swap="#password-container" class="form-element-swap-placeholder">
-				<a href="#">Change Password...</a>
+			<div class="row">
+				<div class="medium-4 columns">
+					<label class="right inline" for="new_password">Password:</label>
+				</div>
+				<div class="medium-8 columns">
+					<div data-swap="#password-container" class="form-element-swap-placeholder">
+						<a class="button small secondary inline" href="#">Change Password...</a>
+					</div>
+					<div class="hide" id="password-container">
+						<input type="password" name="new_password" id="new_password" placeholder="Leave blank to keep current password..." />
+					</div>
+				</div>
 			</div>
-			<div class="hide" id="password-container">
-				<label>
-					Password (Will remain unchanged if blank):
-					<input type="password" name="password"/>
-				</label>
+
+			<div class="row">
+				<div class="medium-4 columns">
+					<label class="right inline" for="api_host">Redmine Host:</label>
+				</div>
+				<div class="medium-8 columns">
+					<input type="text" name="api_host" id="api_host" value="{{ user.api_host }}"/>
+				</div>
 			</div>
-			<div>
-				<label>
-					Redmine Host:
-					<input type="text" name="api_host" value="{{ user.api_host }}"/>
-				</label>
-			</div>
-			<div>
-				<label>
-					Redmine API Key:
-					<input type="text" name="api_key" value="{{ user.api_key }}"/>
-				</label>
+			<div class="row">
+				<div class="medium-4 columns">
+					<label class="right inline" for="api_key">Redmine API Key:</label>
+				</div>
+				<div class="medium-8 columns">
+					<input type="text" name="api_key" id="api_key" value="{{ user.api_key }}"/>
+				</div>
 			</div>
 			<div class="row">
 				<div class="small-12 columns text-right">
@@ -38,14 +49,19 @@
 	</div>
 	<div class="small-12 medium-6 columns ">
 		<div class="panel">
-			<dl>
-				<dt>Username</dt>
-				<dd>{{ api_user.login }}</dd>
-				<dt>Name</dt>
-				<dd>{{ api_user.firstname }} {{ api_user.lastname }}</dd>
-				<dt>Last Login</dt>
-				<dd>{{ api_user.last_login_on }}</dd>
-			</dl>
+			{{#api_user }}
+				<dl class="horizontal">
+					<dt>Username (ID)</dt>
+					<dd>{{ api_user.login }} ({{ api_user.id }})</dd>
+					<dt>Name</dt>
+					<dd>{{ api_user.firstname }} {{ api_user.lastname }}</dd>
+					<dt>Last Login</dt>
+					<dd>{{ api_user.last_login_on }}</dd>
+				</dl>
+			{{/api_user }}
+			{{^api_user }}
+				<p>Please supply API credentials to load user data</p>
+			{{/api_user }}
 		</div>
 	</div>
 </div>

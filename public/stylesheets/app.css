@@ -5611,5 +5611,26 @@ body {
 .form-element-swap-placeholder {
   margin-bottom: 0.5rem; }
 
+dl.horizontal dt {
+  float: left;
+  width: 30%;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+dl.horizontal dd {
+  margin-left: 30%;
+  padding-left: 1em; }
+  dl.horizontal dd:before, dl.horizontal dd:after {
+    content: " ";
+    display: table; }
+  dl.horizontal dd:after {
+    clear: both; }
+
+.inline {
+  margin: 0 0 1rem;
+  display: block;
+  line-height: 1.5;
+  padding: 0.5625rem 0;
+  font-size: 0.875rem; }
+
 
 /*# sourceMappingURL=app.css.map */

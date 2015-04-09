@@ -1,0 +1,14 @@
+{
+  "db": {
+	"database": null,
+	"options": {
+	  "storage": "./data/database.sqlite",
+	  "dialect": "sqlite"
+	}
+  },
+  "session": {
+	"resave": false,
+	"saveUninitialized": false,
+	"cookie": {"maxAge": 60000}
+  }
+}

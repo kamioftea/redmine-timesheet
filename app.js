@@ -8,7 +8,15 @@ var hoganExpress = require('hogan-express');
 var session = require('express-session');
 var flash = require('connect-flash');
 var passport = require('passport');
+var config = require('config');
 
+var Sequelize = require('sequelize');
+var sequelize = new Sequelize(
+	config.get('db.database'),
+	config.get('db.username'),
+	config.get('db.password'),
+	config.get('db.options')
+);
 
 var app = express();
 
@@ -21,19 +29,21 @@ app.set('layout', 'layout/layout');
 app.set('partials', {top_nav: "partial/top_nav"});
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-	secret: 'keyboard cat',
-	resave: false,
-	saveUninitialized: false,
-	cookie: { maxAge: 60000 }
-}));
+// Setup session with DB store
+var sessionConfig = config.get('session');
+var SequelizeStore = require('connect-session-sequelize')(session.Store);
+var store = new SequelizeStore({ db: sequelize });
+store.sync();
+sessionConfig.store = store;
+app.use(session(sessionConfig));
+
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -48,7 +58,6 @@ app.use(function(req, res, next){
 	next();
 });
 
-
 var index = require('./routes/index');
 var account = require('./routes/account');
 //var users = require('./routes/users');
@@ -56,7 +65,6 @@ var account = require('./routes/account');
 app.use('/auth', auth);
 app.use('/', index);
 app.use('/account', account);
-// app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

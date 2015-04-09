@@ -12,5 +12,7 @@ $(function(){
 		
 		$target.show();
 		$this.hide();
-	})
+	});
+
+
 });

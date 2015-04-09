@@ -31,7 +31,7 @@ router.post('/',
 			req.user,
 			{
 				email: req.body.email,
-				password: req.body.password,
+				password: req.body.new_password,
 				api_host: req.body.api_host,
 				api_key: req.body.api_key
 			},
