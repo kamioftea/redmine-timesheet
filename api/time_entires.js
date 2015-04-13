@@ -2,8 +2,8 @@ var request = require('request');
 var moment = require('moment');
 
 module.exports = function(api_host, api_key){
-	function getCurrentUser(cb){
-		var url = api_host + '/users/current.json?key=' + api_key;
+	function getTimeEntries(date, user_id){
+		var url = api_host + '/time/current.json?key=' + api_key;
 		
 		request(url, function(err, response, body){
 			if (err){
@@ -12,7 +12,7 @@ module.exports = function(api_host, api_key){
 			if(response.statusCode !== 200){
 				return cb(body);
 			}
-			data = JSON.parse(body);
+			var data = JSON.parse(body);
 			if(data.user === undefined)
 			{
 				return cb('No user returned in response')

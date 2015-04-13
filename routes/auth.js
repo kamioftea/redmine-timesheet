@@ -1,39 +1,35 @@
 var express = require('express');
 var LocalStrategy = require('passport-local').Strategy;
-var userService = require('../model/user');
+var models = require('../models');
 
 module.exports = function (app, passport) {
 
 	passport.serializeUser(function (user, done) {
-		done(null, user.email);
+		done(null, user.user_id);
 	});
 
-	passport.deserializeUser(function (email, done) {
-		userService.getUserByEmail(email, function (err, user) {
-			done(err, user);
-		});
+	passport.deserializeUser(function (user_id, done) {
+		models.User.find(user_id).then(function (user) {
+			done(null, user);
+		})
 	});
 
 	passport.use('login', new LocalStrategy(
 		{usernameField: 'email'},
 		function (email, password, done) {
 
-			userService.getUserByEmail(email, function (err, user) {
-				if (err) {
-                  	console.log('err: '+err);
-					return done(err);
-				}
+			models.User.find({where: {email: email}}).then(function (user) {
 				if (!user) {
-                  console.log('no user');
+					console.log('no user');
 					return done(null, false, {message: 'Incorrect email.'});
 				}
 
-				if (!userService.validPassword(user, password)) {
-                  console.log('pass no match');
-                  console.log(user);
-				  return done(null, false, {message: 'Incorrect password.'});
+				if (!user.validatePassword(password)) {
+					console.log('pass no match');
+					console.log(user);
+					return done(null, false, {message: 'Incorrect password.'});
 				}
-              console.log('ok');
+				console.log('ok');
 				return done(null, user);
 			});
 		}
@@ -41,34 +37,24 @@ module.exports = function (app, passport) {
 
 	passport.use('signup', new LocalStrategy({
 				passReqToCallback: true,
-				usernameField:     'email'
+				usernameField:     'email'
 			},
 			function (req, email, password, done) {
 				var findOrCreateUser = function () {
 					// find a user in Mongo with provided username
-					userService.getUserByEmail({'email': email}, function (err, user) {
-						// In case of any error return
-						if (err) {
-							return done(err);
-						}
+					models.User.find({where: {email: email}}).then(function (user) {
 						// already exists
 						if (user) {
 							return done(null, false,
 								req.flash('message', 'User Already Exists'));
 						}
 						else {
-							userService.addUser(
-								email,
-								password,
-								null,
-								null,
-								function (err, user) {
-									if (err) {
-										throw err;
-									}
-									return done(null, user);
-								}
-							);
+							models.User.create({
+								email:    email,
+								password: models.User.makePassword(password)
+							}).done(function (user) {
+								return done(null, user);
+							});
 						}
 					});
 				};
@@ -91,7 +77,7 @@ module.exports = function (app, passport) {
 	/* GET home page. */
 	router.get('/login', function (req, res) {
 		res.render('auth/login', {
-			page: {title: 'Login'},
+			page:    {title: 'Login'},
 			message: req.flash('message')
 		});
 	});
@@ -99,10 +85,10 @@ module.exports = function (app, passport) {
 	router.post('/login', passport.authenticate('login', {
 		successRedirect: '/',
 		failureRedirect: '/auth/login',
-		failureFlash:    true
+		failureFlash:    true
 	}));
 
-	router.get('/logout', function(req, res){
+	router.get('/logout', function (req, res) {
 		req.logout();
 		res.redirect('/auth/login');
 	});
@@ -110,7 +96,7 @@ module.exports = function (app, passport) {
 	/* GET Registration Page */
 	router.get('/signup', function (req, res) {
 		res.render('auth/signup', {
-			title:   'Sign Up | Redmine Timesheet',
+			title:   'Sign Up | Redmine Timesheet',
 			message: req.flash('message')
 		});
 	});
@@ -119,7 +105,7 @@ module.exports = function (app, passport) {
 	router.post('/signup', passport.authenticate('signup', {
 		successRedirect: '/',
 		failureRedirect: '/auth/signup',
-		failureFlash:    true
+		failureFlash:    true
 	}));
 
 

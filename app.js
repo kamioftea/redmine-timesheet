@@ -60,11 +60,13 @@ app.use(function(req, res, next){
 
 var index = require('./routes/index');
 var account = require('./routes/account');
+var timesheet = require('./routes/timesheet');
 //var users = require('./routes/users');
 
 app.use('/auth', auth);
 app.use('/', index);
 app.use('/account', account);
+app.use('/timesheet', timesheet);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

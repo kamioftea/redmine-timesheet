@@ -75,7 +75,7 @@ function updateUser(user, data, cb)
 			" password = ?," +
 			" api_host = ?," +
 			" api_key = ?" +
-		"WHERE user_id = ?";
+		" WHERE user_id = ?";
 
 	var email = data.email || user.email;
 	var password = data.password ? getHashedPassword(data.password) : user.password;

@@ -4,13 +4,14 @@
 
 var express = require('express');
 var router = express.Router();
-var userService = require('../model/user.js');
+var models = require('../models');
 
 router.get('/',
 	function (req, res, next){
 		if(!req.user.api_host || !req.user.api_key){
 			return next();
 		}
+		console.log(req.user.getApiUser());
 		var api = require('../api/users.js')(req.user.api_host, req.user.api_key);
 		api.getCurrentUser(function(err, api_user){
 			res.locals.api_user = api_user;
@@ -27,21 +28,14 @@ router.get('/',
 
 router.post('/',
 	function (req, res) {
-		userService.updateUser(
-			req.user,
+			req.user.update(
 			{
 				email: req.body.email,
-				password: req.body.new_password,
+				password: req.body.new_password ? models.User.makePassword(req.body.new_password) : req.user.password,
 				api_host: req.body.api_host,
 				api_key: req.body.api_key
-			},
-			function(err, user){
-				if(err) {
-					req.flash('error', err)
-				}
-				else {
-					req.flash('success', 'Account Updated')
-				}
+			}).then(function(user){
+				req.flash('success', 'Account Updated');
 				res.redirect('/account');
 			}
 		)
