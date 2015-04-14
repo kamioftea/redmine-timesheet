@@ -5,12 +5,12 @@ var models = require('../models');
 module.exports = function (app, passport) {
 
 	passport.serializeUser(function (user, done) {
-		done(null, user.user_id);
+		return done(null, user.user_id);
 	});
 
 	passport.deserializeUser(function (user_id, done) {
 		models.User.find(user_id).then(function (user) {
-			done(null, user);
+			return done(null, user);
 		})
 	});
 
@@ -20,16 +20,13 @@ module.exports = function (app, passport) {
 
 			models.User.find({where: {email: email}}).then(function (user) {
 				if (!user) {
-					console.log('no user');
 					return done(null, false, {message: 'Incorrect email.'});
 				}
 
 				if (!user.validatePassword(password)) {
-					console.log('pass no match');
-					console.log(user);
 					return done(null, false, {message: 'Incorrect password.'});
 				}
-				console.log('ok');
+				
 				return done(null, user);
 			});
 		}
