@@ -8,7 +8,8 @@ body {
     & > .columns
     {
       box-shadow: 0 0 6px 1px $aluminum;
-      padding-bottom: 1rem;
+      padding-top: 0.8rem;
+      padding-bottom: 0.8rem;
     }
   }
 }
@@ -23,6 +24,8 @@ body {
 }
 
 dl.horizontal {
+  margin-top: 1rem;
+
   dt {
     float:left;
     width: 30%;
@@ -34,6 +37,10 @@ dl.horizontal {
     @include clearfix();
     margin-left: 30%;
     padding-left: 1em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 

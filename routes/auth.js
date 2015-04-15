@@ -26,7 +26,7 @@ module.exports = function (app, passport) {
 				if (!user.validatePassword(password)) {
 					return done(null, false, {message: 'Incorrect password.'});
 				}
-				
+
 				return done(null, user);
 			});
 		}
@@ -79,16 +79,31 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	router.post('/login', passport.authenticate('login', {
-		successRedirect: '/',
-		failureRedirect: '/auth/login',
-		failureFlash:    true
-	}));
+	router.post(
+		'/login',
+		passport.authenticate('login', {
+				failureRedirect: '/auth/login',
+				failureFlash:    true
+			}
+		),
+		// Wait for session to save before redirecting
+		function (req, res) {
+			req.session.save(function (err) {
+				res.redirect('/');
+			})
+		}
+	);
 
-	router.get('/logout', function (req, res) {
-		req.logout();
-		res.redirect('/auth/login');
-	});
+	router.get(
+		'/logout',
+		function (req, res, next)
+		{
+			req.logout();
+			req.session.destroy(function (err) {
+				res.redirect('/');
+			})
+		}
+	);
 
 	/* GET Registration Page */
 	router.get('/signup', function (req, res) {
@@ -99,11 +114,19 @@ module.exports = function (app, passport) {
 	});
 
 	/* Handle Registration POST */
-	router.post('/signup', passport.authenticate('signup', {
-		successRedirect: '/',
-		failureRedirect: '/auth/signup',
-		failureFlash:    true
-	}));
+	router.post(
+		'/signup',
+		passport.authenticate('signup', {
+			failureRedirect: '/auth/signup',
+			failureFlash:    true
+		}),
+		// Wait for session to save before redirecting
+		function (req, res) {
+			req.session.save(function (err) {
+				res.redirect('/');
+			})
+		}
+	);
 
 
 	return router;

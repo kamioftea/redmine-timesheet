@@ -28,6 +28,8 @@ app.set('view engine', 'mustache');
 app.set('layout', 'layout/layout');
 app.set('partials', {top_nav: "partial/top_nav"});
 
+app.locals.site = config.get('site');
+
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
@@ -50,9 +52,6 @@ app.use(passport.session());
 
 var auth = require('./routes/auth')(app, passport);
 
-app.locals.site = {};
-app.locals.site.title = 'Redmine Timesheet';
-
 app.use(function(req, res, next){
 	res.locals.user = req.user;
 	next();
@@ -61,7 +60,6 @@ app.use(function(req, res, next){
 var index = require('./routes/index');
 var account = require('./routes/account');
 var timesheet = require('./routes/timesheet');
-//var users = require('./routes/users');
 
 app.use('/auth', auth);
 app.use('/', index);

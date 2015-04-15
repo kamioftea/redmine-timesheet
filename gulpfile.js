@@ -58,9 +58,12 @@ gulp.task('watch', ['styles', 'scripts'], function () {
 
 gulp.task('start', ['styles', 'scripts'], function () {
 	nodemon({
-		script: './bin/www'
-		, ext:  'js'
-		, env:  {'NODE_ENV': 'development'}
+		script: './bin/www',
+		ext:  'js,json',
+		env:  {
+			'NODE_ENV': 'development'
+			//,'DEBUG': 'connect:session-sequelize'
+		}
 	})
 });
 

@@ -1,2 +1,15 @@
-<nav><a href="{{ previousUrl }}">Prev</a><a class="right" href="{{ nextUrl }}">Next</a></nav>
-<h1>Timesheet <small>{{ date }}</small></h1>
+<nav class="row">
+	<div class="small-2 columns">
+		<a class="button secondary expand" href="{{ previousUrl }}">Prev</a>
+	</div>
+
+	<div class="small-8 columns text-center">
+		<a class="button secondary expand" href="#">{{ date }}</a>
+	</div>
+
+	<div class="small-2 columns text-right">
+		<a class="button secondary expand" href="{{ nextUrl }}">Next</a>
+	</div>
+</nav>
+
+<h1 class="text-center">Timesheet</h1>
