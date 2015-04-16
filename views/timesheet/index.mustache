@@ -13,3 +13,32 @@
 </nav>
 
 <h1 class="text-center">Timesheet</h1>
+
+{{#timeEntries}}
+	<div class="row">
+		<div class="small-12 columns">
+			<dl class="horizontal">
+				<dt>ID:</dt>
+				<dd>{{ id }}</dd>
+
+				<dt>Project:</dt>
+				<dd>{{ project.id }}: {{ project.name }}</dd>
+
+				<dt>Issue:</dt>
+				<dd>{{ issue.id }}</dd>
+
+				<dt>User:</dt>
+				<dd>{{ user.id }}: {{ user.name }}</dd>
+
+				<dt>Activity:</dt>
+				<dd>{{ activity.id }}: {{ activity.name }}</dd>
+
+				<dt>Hours:</dt>
+				<dd>{{ hours }}</dd>
+
+				<dt>Comments:</dt>
+				<dd>{{ comments }}</dd>
+			</dl>
+		</div>
+	</div>
+{{/timeEntries}}
