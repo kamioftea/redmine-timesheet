@@ -9,6 +9,7 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var passport = require('passport');
 var config = require('config');
+var expressPromise = require('express-promise');
 
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize(
@@ -36,6 +37,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(expressPromise());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Setup session with DB store

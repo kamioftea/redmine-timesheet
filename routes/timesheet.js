@@ -16,7 +16,7 @@ function relativeWeekDay(date, days) {
 }
 
 function urlFromDate(date) {
-	return '/timesheet/' + date.year() + '/' + date.month() + '/' + date.date();
+	return '/timesheet/' + date.year() + '/' + (date.month() + 1) + '/' + date.date();
 }
 
 /* GET home page. */
@@ -31,7 +31,7 @@ router.get('/:year/:month/:day',
 			return next();
 		}
 		req.api = require('../api/time_entries.js')(req.user.api_host, req.user.api_key, models.ApiCache);
-		req.date = moment([req.params.year, req.params.month, req.params.day]);
+		req.date = moment([req.params.year, req.params.month - 1, req.params.day]);
 		next()
 	},
 	function (req, res, next) {
