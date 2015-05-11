@@ -14,34 +14,27 @@
 
 <h1 class="text-center">Timesheet</h1>
 
+<div class="time-entries">
 {{#timeEntries}}
 	<div class="row">
-		<div class="small-12 columns">
-			<dl class="horizontal">
-				<dt>ID:</dt>
-				<dd>{{ id }}</dd>
+		<section class="time-entry small-12 columns"
+		         data-id="{{ id }}"
+		         data-project-id="{{ project.id }}"
+				 data-issue-id="{{ issue.id }}">
 
-				<dt>Project:</dt>
-				<dd>{{ project.id }}: {{ project.name }}</dd>
+			<div class="project" >{{ project.name }}</div>
+			<h2>{{ issue.subject }}</h2>
 
-				<dt>Issue:</dt>
-				<dd>{{ issue.id }}</dd>
+			<span>Hours:</span>
+			<span>{{ hours }}</span>
 
-				<dt>User:</dt>
-				<dd>{{ user.id }}: {{ user.name }}</dd>
+			<span>Comments:</span>
+			<span>{{ comments }}</span>
 
-				<dt>Activity:</dt>
-				<dd>{{ activity.id }}: {{ activity.name }}</dd>
-
-				<dt>Hours:</dt>
-				<dd>{{ hours }}</dd>
-
-				<dt>Comments:</dt>
-				<dd>{{ comments }}</dd>
-			</dl>
-		</div>
+		</section>
 	</div>
 {{/timeEntries}}
+</div>
 	<hr>
     <div>
     	

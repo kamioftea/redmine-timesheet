@@ -5,7 +5,6 @@ module.exports = function (api_host, api_key, cache) {
 	function getTimeEntryActivities(cb) {
 		var url = api_host + '/enumerations/time_entry_activities.json?key=' + api_key;
 		var doRequest = function (reqCb) {
-			error_log('MAKING REQUEST')
 			request(url, function (err, response, body) {
 				if (err) {
 					return reqCb(err);
@@ -47,7 +46,7 @@ module.exports = function (api_host, api_key, cache) {
 
 	function getTimeEntries(qs, cb) {
 		var url = api_host + '/time_entries.json';
-		unique_url = url + JSON.stringify(qs);
+		var unique_url = url + JSON.stringify(qs);
 		qs.key = api_key;
 		var options = {
 			url: url,
@@ -81,7 +80,7 @@ module.exports = function (api_host, api_key, cache) {
 			cache.find({where: {url: unique_url}})
 				.then(function (cachedResponse) {
 					if (cachedResponse) {
-						cb(null, JSON.parse(cachedResponse.body).time_entry_activities);
+						cb(null, JSON.parse(cachedResponse.body).time_entries);
 						// also refresh the cache
 						doRequest(function(){console.log('refreshed cache')});
 					}
