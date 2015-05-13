@@ -15,28 +15,52 @@
 <h1 class="text-center">Timesheet</h1>
 
 <div class="time-entries">
-{{#timeEntries}}
+	{{#timeEntries}}
+		<div class="row">
+			<div class=" small-12 columns">
+
+				<section class="time-entry panel"
+				         data-id="{{ id }}"
+				         data-project-id="{{ project.id }}"
+				         data-issue-id="{{ issue.id }}">
+					<div class="row">
+						<div class="small-8 large-10 columns">
+							<span class="project-label">{{ project.name }}</span>
+							{{#issue}}
+								<h2>{{ subject }}</h2>
+								{{#comments}}
+									<p>{{ comments }}</p>
+								{{/comments}}
+							{{/issue}}
+							{{^issue}}
+								<h2>{{ comments }}</h2>
+							{{/issue}}
+						</div>
+						<div class="small-4 large-2 columns">
+							<div class="hours">{{ hours }}</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	{{/timeEntries}}
 	<div class="row">
-		<section class="time-entry small-12 columns"
-		         data-id="{{ id }}"
-		         data-project-id="{{ project.id }}"
-				 data-issue-id="{{ issue.id }}">
-
-			<div class="project" >{{ project.name }}</div>
-			<h2>{{ issue.subject }}</h2>
-
-			<span>Hours:</span>
-			<span>{{ hours }}</span>
-
-			<span>Comments:</span>
-			<span>{{ comments }}</span>
-
-		</section>
+		<div class=" small-12 columns">
+			<section class="time-entry total">
+				<div class="row">
+					<div class="small-8 large-10 columns">
+						<h2>Total</h2>
+					</div>
+					<div class="small-4 large-2 columns">
+						<div class="hours">{{ totalHours }}</div>
+					</div>
+				</div>
+			</section>
+		</div>
 	</div>
-{{/timeEntries}}
 </div>
-	<hr>
-    <div>
-    	
-    </div>
+<hr>
+<div>
+
+</div>
 

@@ -1,6 +1,8 @@
 @import "settings";
 @import "foundation";
 
+@import "time-entry";
+
 body {
   background-color: $white-smoke;
   & > .row {

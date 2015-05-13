@@ -27,6 +27,16 @@ router.get('/', function (req, res) {
 	res.redirect(urlFromDate(date));
 });
 
+function durationAsHoursMinutes(duration) {
+	var output = [];
+	if (duration.hours) {
+		output.push(duration.hours() + ' h');
+	}
+	if (duration.minutes) {
+		output.push(duration.minutes() + ' m');
+	}
+	return output.join(' ');
+}
 router.get('/:year/:month/:day',
 	function (req, res, next) {
 		if (!req.user.api_host || !req.user.api_key) {
@@ -129,6 +139,19 @@ router.get('/:year/:month/:day',
 				next();
 			}
 		)
+	},
+	function (req, res, next)
+	{
+		var hours = 0;
+		res.locals.timeEntries = res.locals.timeEntries.map(function (v) {
+			hours += v.hours;
+			v.hours = durationAsHoursMinutes(moment.duration(v.hours, 'hours'));
+			return v;
+		});
+
+		res.locals.totalHours = durationAsHoursMinutes(moment.duration(hours, 'hours'));
+
+		next();
 	},
 	function (req, res) {
 		res.render('timesheet/index', {

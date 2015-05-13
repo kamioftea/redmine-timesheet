@@ -5598,6 +5598,18 @@ th.hide-for-touch {
   th.show-for-print {
     display: table-cell !important; } }
 
+.time-entry {
+  position: relative;
+  padding: .5em .75em; }
+  .time-entry h2 {
+    font-size: 1.1em; }
+  .time-entry .project-label {
+    font-size: 0.8em;
+    text-transform: uppercase; }
+  .time-entry .hours {
+    font-size: 2em;
+    text-align: right; }
+
 body {
   background-color: #F5F5F5; }
   body > .row {
