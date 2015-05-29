@@ -41,6 +41,19 @@
 				</div>
 			</div>
 			<div class="row">
+				<div class="medium-4 columns">
+					<label class="right inline" for="default_activity_id">Default Activity</label>
+				</div>
+				<div class="medium-8 columns">
+					<select name="default_activity_id" id="default_activity_id">
+						<option value=""></option>
+						{{#timeEntryActivities }}
+							<option value="{{ id }}" {{ selected }}>{{ name }}</option>
+						{{/timeEntryActivities }}
+					</select>
+				</div>
+			</div>
+			<div class="row">
 				<div class="small-12 columns text-right">
 					<input class="button" type="submit" value="Update"/>
 				</div>

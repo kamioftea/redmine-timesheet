@@ -1,0 +1,48 @@
+<h2 class="text-center">Add New</h2>
+<div class="row">
+	<div class="small-12 columns">
+		<div class="panel">
+			<form>
+				<input type="hidden" name="spent_on" value="{{ spent_on }}">
+				<div class="row">
+					<div class="medium-4 columns">
+						<label class="right inline" for="project_id">Project</label>
+					</div>
+					<div class="medium-8 columns">
+						<select name="project_id" id="project_id" required>
+							{{#projects }}
+								<option value="{{ id }}">{{{ indent }}}{{ name }}</option>
+							{{/projects}}
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="medium-4 columns">
+						<label class="right inline" for="issue_id">Issue</label>
+					</div>
+					<div class="medium-8 columns">
+						<select name="issue_id" id="issue_id">
+							<option value="" data-project-id="">-- No Issue --</option>
+							{{#issues }}
+								<option value="{{ id }}" data-project-id="{{ project.id }}">{{ subject }}</option>
+							{{/issues}}
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="medium-4 columns">
+						<label class="right inline" for="activity_id">Activity</label>
+					</div>
+					<div class="medium-8 columns">
+						<select name="activity_id" id="activity_id">
+							<option value=""></option>
+							{{#timeEntryActivities }}
+								<option value="{{ id }}" {{ selected }}>{{ name }}</option>
+							{{/timeEntryActivities }}
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

@@ -9,6 +9,7 @@ var nodemon = require('gulp-nodemon');
 var postcss = require('gulp-postcss');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('autoprefixer-core');
+var moduleBuilder = require('gulp-module-builder');
 
 var paths = {
 	styles:        ['./assets/styles/app.scss'],
@@ -22,13 +23,13 @@ var paths = {
 		'./bower_components/foundation/js/foundation/foundation.alert.js',
 		'./bower_components/foundation/js/foundation/foundation.topbar.js',
 		'./bower_components/fastclick/lib/fastclick.js',
+		'./bower_components/bacon/dist/Bacon.js',
 		'./assets/scripts/app.js'
 	]
 };
 
 gulp.task('styles', function () {
-	return gulp
-		.src(paths.styles)
+	return gulp.src(paths.styles)
 		.pipe(sourcemaps.init())
 		.pipe(sass({includePaths: paths.styleIncludes}))
 		.pipe(postcss([autoprefixer({browsers: ['last 2 version']})]))
@@ -38,12 +39,16 @@ gulp.task('styles', function () {
 });
 
 gulp.task('scripts', function () {
-	gulp
-		.src(paths.scripts)
+	gulp.src(paths.scripts)
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(concat('app.js'))
 		.pipe(sourcemaps.write('.'))
+		.pipe(gulp.dest('./public/js'));
+
+	gulp.src('./js-builder-manifest.json')
+		.pipe(moduleBuilder())
+		.pipe(uglify())
 		.pipe(gulp.dest('./public/js'));
 
 	return gulp

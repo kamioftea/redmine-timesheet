@@ -27,7 +27,7 @@
 						<div class="small-8 large-10 columns">
 							<span class="project-label">{{ project.name }}</span>
 							{{#issue}}
-								<h2>{{ subject }}</h2>
+								<h2>{{ issue.id }}: {{ subject }}</h2>
 								{{#comments}}
 									<p>{{ comments }}</p>
 								{{/comments}}
@@ -61,6 +61,6 @@
 </div>
 <hr>
 <div>
-
+	{{> time_entry_form }}
 </div>
 

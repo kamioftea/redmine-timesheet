@@ -1,0 +1,6 @@
+{
+  "timesheet": [
+	"./assets/scripts/timesheet/*.js",
+	"./assets/scripts/timesheet/**/*.js"
+  ]
+}

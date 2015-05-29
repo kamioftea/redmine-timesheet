@@ -4,11 +4,12 @@ var bCrypt = require('bcrypt-nodejs');
 
 module.exports = function (sequelize, DataTypes) {
 	var User = sequelize.define("User", {
-		user_id:  {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-		email:    {type: DataTypes.STRING, unique: true},
-		password: {type: DataTypes.STRING(60)},
-		api_host: {type: DataTypes.STRING},
-		api_key:  {type: DataTypes.STRING(40)}
+		user_id:             {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+		email:               {type: DataTypes.STRING, unique: true},
+		password:            {type: DataTypes.STRING(60)},
+		api_host:            {type: DataTypes.STRING},
+		api_key:             {type: DataTypes.STRING(40)},
+		default_activity_id: {type: DataTypes.INTEGER}
 	}, {
 		classMethods:    {
 			associate:    function (models) {
@@ -25,13 +26,12 @@ module.exports = function (sequelize, DataTypes) {
 			getOrCreateApiUser: function (cb) {
 				var user = this;
 
-				this.getApiUser().then(function(ApiUser){
+				this.getApiUser().then(function (ApiUser) {
 					if (ApiUser) {
 						return cb(null, ApiUser);
 					}
-					
-					if (!user.api_host || !user.api_key)
-					{
+
+					if (!user.api_host || !user.api_key) {
 						return cb('User doesn\'t have API credentials');
 					}
 
@@ -41,18 +41,18 @@ module.exports = function (sequelize, DataTypes) {
 							return cb(err)
 						}
 
-						sequelize.models.ApiUser.create(api_user).then(function(ApiUser) {
+						sequelize.models.ApiUser.create(api_user).then(function (ApiUser) {
 							ApiUser.setUser(user);
 							ApiUser.save().then(function (ApiUser) {
 								return cb(null, ApiUser);
 							}, function (err) {
 								return cb(err);
 							});
-						}, function(err) {
+						}, function (err) {
 							return cb(err)
 						});
 					});
-				}, function(err){
+				}, function (err) {
 					return cb(err);
 				});
 

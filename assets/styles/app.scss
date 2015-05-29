@@ -53,3 +53,9 @@ dl.horizontal {
   padding: 0.5625rem 0;
   font-size: 0.875rem;
 }
+
+.panel {
+  p:last-child {
+    margin-bottom: 0;
+  }
+}

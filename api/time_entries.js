@@ -82,7 +82,7 @@ module.exports = function (api_host, api_key, cache) {
 					if (cachedResponse) {
 						cb(null, JSON.parse(cachedResponse.body).time_entries);
 						// also refresh the cache
-						doRequest(function(){console.log('refreshed cache')});
+						doRequest(function(){});
 					}
 					else {
 						doRequest(cb)

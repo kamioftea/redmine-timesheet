@@ -5,6 +5,6 @@ data
 *.log
 *.css.map
 *.js.map
-public/js/app.js
-public/stylesheets/app.css
+public/js/*.js
+public/stylesheets/*.css
 config/*local.json

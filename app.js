@@ -67,7 +67,7 @@ var timesheet = require('./routes/timesheet');
 app.use('/auth', auth);
 app.use('/', index);
 app.use('/account', account);
-app.use('/timesheet', timesheet);
+app.use('/timesheet', timesheet(app));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
